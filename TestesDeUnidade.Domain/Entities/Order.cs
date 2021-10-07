@@ -4,14 +4,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Flunt.Validations;
 
 namespace TestesDeUnidade.Domain.Entities
 {
     class Order : Entity
     {
-        public Order(Customer costumer, decimal deliveryFee, Discount discount)
+        public Order(Customer customer, decimal deliveryFee, Discount discount)
         {
-            Costumer = costumer;
+            AddNotifications(
+                new Contract()
+                .Requires()
+                .IsNotNull(customer, "Costumer", "Cliente Inválido")
+            );
+
+            Costumer = customer;
             Date = DateTime.Now;
             Number = Guid.NewGuid().ToString().Substring(0, 8);
             Items = new List<OrderItem>();
@@ -31,7 +38,8 @@ namespace TestesDeUnidade.Domain.Entities
         public void AddItem(Product product, int quantity)
         {
             var item = new OrderItem(product, quantity);
-            Items.Add(item);
+            if (item.Valid)
+                Items.Add(item);
         }
 
         public decimal Total()
