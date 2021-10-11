@@ -8,7 +8,7 @@ using Flunt.Validations;
 
 namespace TestesDeUnidade.Domain.Entities
 {
-    class Order : Entity
+    public class Order : Entity
     {
         public Order(Customer customer, decimal deliveryFee, Discount discount)
         {

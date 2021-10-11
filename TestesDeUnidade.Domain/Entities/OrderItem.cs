@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Flunt.Validations;
 
 namespace TestesDeUnidade.Domain.Entities
 {
@@ -10,6 +7,13 @@ namespace TestesDeUnidade.Domain.Entities
     {
         public OrderItem(Product product, int quantity)
         {
+            AddNotifications(
+                new Contract()
+                    .Requires()
+                    .IsNotNull(product, "Product", "Produto inválido")
+                    .IsGreaterThan(quantity, 0, "Quantity", "A quantidade deve ser maior que zero")
+            );
+
             Product = product;
             Price = Product != null ? product.Price : 0;
             Quantity = quantity;
